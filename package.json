@@ -1,0 +1,34 @@
+{
+  "name": "youtube-downloader---youtube-dl",
+  "version": "1.0.0",
+  "description": "Youtube video and playlist downloader based on youtube-dl and build with electronjs",
+  "main": "./src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "prettier": "prettier --config .prettierrc --write src/*js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xMansour/Youtube-Downloader.git"
+  },
+  "keywords": [
+    "Youtube",
+    "Youtube-dl",
+    "Download",
+    "Video",
+    "Playlist"
+  ],
+  "author": "Mahmoud Mansour",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xMansour/Youtube-Downloader/issues"
+  },
+  "homepage": "https://github.com/xMansour/Youtube-Downloader#readme",
+  "devDependencies": {
+    "electron": "^19.0.5",
+    "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "ytdl-core": "^4.11.0"
+  }
+}

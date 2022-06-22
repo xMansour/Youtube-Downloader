@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script src="./renderer.js" defer></script>
+    <title>Youtube Downloader</title>
+</head>
+
+<body>
+    <h1>Youtube Downloader</h1>
+    <input type="text" id="videoUrl" placeholder="Enter video or playlist url">
+    <input type="button" id="btnSearch" value="Search">
+
+    <ol id="formatList"></ol>
+    <table class="styled-table" id="formatTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Quality</th>
+                <th>Duration</th>
+                <th>Tag</th>
+            </tr>
+        </thead>
+        <tbody id="formatListBody">
+        
+        </tbody>
+    </table>
+</body>
+
+</html>
