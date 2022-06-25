@@ -7,7 +7,8 @@
 * {
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
-    ;
+    scroll-behavior: smooth;
+
 }
 
 html,
@@ -19,67 +20,52 @@ body {
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     color: #525252;
-}
-
-h1 {
-    font-weight: 700;
 }
 
 
 
 #mainContainer {
-    margin: 3rem;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
+    padding: 1rem;
 }
 
-.styled-table {
-    border-collapse: collapse;
-    font-size: 0.9em;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+table {
+    margin: 1rem 0;
+}
+
+td {
+    vertical-align: middle;
+}
+
+tbody {
+    display: block;
+    height: 160px;
+    max-height: 160px;
+    overflow-y: auto;
 }
 
 thead,
-tbody {
-    display: block;
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 
-tbody {
-
-    height: 300px;
-    /* Just for the demo          */
-    overflow-y: auto;
-    /* Trigger vertical scroll    */
-    overflow-x: hidden;
-    /* Hide the horizontal scroll */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding-top: 0.5rem;
 }
 
-.styled-table thead tr {
-    background-color: #009879;
-    color: #ffffff;
-    text-align: left;
+#progressBarContainer {}
+
+.label {
+    margin-bottom: 0rem !important;
 }
 
-.styled-table th,
-.styled-table td {
-    padding: 12px 15px;
-}
-
-.styled-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-.styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-.styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+#btnSearch {
+    width: 100%;
 }
