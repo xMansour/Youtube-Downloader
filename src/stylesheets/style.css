@@ -37,19 +37,6 @@ td {
     vertical-align: middle;
 }
 
-tbody {
-    display: block;
-    height: 160px;
-    max-height: 160px;
-    overflow-y: auto;
-}
-
-thead,
-tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
 
 footer {
     position: fixed;

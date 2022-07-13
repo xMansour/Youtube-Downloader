@@ -31,7 +31,7 @@
                     <div id="btnSearchText">
                         Search
                     </div>
-                    <div id="loadingDiv" class="visually-hidden">
+                    <div id="loadingDiv" class="d-none">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         Loading...
                     </div>
@@ -53,13 +53,11 @@
             </label>
         </div>
 
-        <table class="table table-hover visually-hidden" id="formatTable">
+        <table class="table table-hover d-none table-sm" id="formatTable">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Quality</th>
-                    <!--<th>Duration</th>
-                    <th>Tag</th>-->
                     <th>Download</th>
                 </tr>
             </thead>
@@ -67,23 +65,23 @@
 
             </tbody>
         </table>
-
-        <table class="table table-hover visually-hidden" id="formatTablePlaylist">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Duration</th>
-                    <th>Progress</th>
-                </tr>
-            </thead>
-            <tbody id="formatListBodyPlaylist">
-
-            </tbody>
-        </table>
-
-        <hr id="seperatorLine" class="visually-hidden">
-        <div class="d-flex align-items-center visually-hidden" id="progressBarWrapper">
+        <div class="table-responsive"  class="overflow-scroll" style="height:500px; max-height:500px;">
+            <table class="table table-hover d-none table-sm" id="formatTablePlaylist">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Thumbnail</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Progress</th>
+                    </tr>
+                </thead>
+                <tbody id="formatListBodyPlaylist">
+                </tbody>
+            </table>
+        </div>
+        <hr id="seperatorLine" class="d-none">
+        <div class="d-flex align-items-center d-none" id="progressBarWrapper">
             <div class="col-2">
                 <label for="progressBarContainer" class="form-label label" id="progressLabel">Progress: </label>
             </div>
