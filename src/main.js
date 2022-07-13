@@ -4,7 +4,7 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 600,
     height: 420,
-    icon: path.join(__dirname, "icons", "launcher_icon2.jpg"),
+    icon: path.join(__dirname, "icons", "launcher_icon.jpg"),
     webPreferences: {
       nodeIntegration: true, //gives access to the nodeJS api
       contextIsolation: false,
@@ -34,7 +34,7 @@ ipcMain.handle("show-notification", (event, ...args) => {
   const notification = {
     title: "Video Downloaded",
     body: `${args[0]}`,
-    icon: path.join(__dirname, "icons", "launcher_icon2.jpg"),
+    icon: path.join(__dirname, "icons", "launcher_icon.jpg"),
   };
 
   new Notification(notification).show();
