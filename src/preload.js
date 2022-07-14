@@ -20,14 +20,14 @@ window.addEventListener("DOMContentLoaded", () => {
     const progressBar = document.querySelector("#progressBar");
     const progressBarContainer = document.querySelector("#progressBarContainer");
     const playlistCheckBox = document.querySelector("#playlistCheckBox");
-    const playlistNumbering = document.querySelector("#playlistNumbering");
+    const playlistNumbersCheckBox = document.querySelector("#playlistNumbersCheckBox");
     const seperatorLine = document.querySelector("#seperatorLine");
     const progressBarWrapper = document.querySelector("#progressBarWrapper");
 
     const ytpl = require("ytpl");
 
     playlistCheckBox.addEventListener("click", (event) => {
-        playlistNumbering.toggleAttribute("disabled");
+        playlistNumbersCheckBox.toggleAttribute("disabled");
     });
 
     const downloadVideo = async (videoLink) => {
@@ -114,15 +114,17 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    const downloadPlayListVideo = async (videoLink, playlistTitle, progressLabel) => {
+    const downloadPlayListVideo = async (videoLink, playlistTitle, counter, progressLabel) => {
         await ytdl.getInfo(videoLink).then((data) => {
             console.log(data);
-            const fileName =
+            let fileName =
                 data.videoDetails.title +
                 " " +
                 data.formats.filter(format => format.itag === 22)[0].qualityLabel +
                 ".mp4";
-
+            if (playlistNumbersCheckBox.checked) {
+                fileName = counter + ". " + fileName;
+            }
             const downloadDir = path.join(process.cwd(), path.join("downloads"));
             const playlistDir = path.join(process.cwd(), path.join("downloads", playlistTitle));
             if (!fs.existsSync(downloadDir)) {
@@ -190,52 +192,55 @@ window.addEventListener("DOMContentLoaded", () => {
 
                     const progressLabel = tr.insertCell();
                     progressLabel.innerText = "0%";
-                    await downloadPlayListVideo(search.items[key].shortUrl, search.title, progressLabel);
-                    /*
-                                        await ytdl.getInfo(search.items[key].shortUrl).then((data) => {
-                                            console.log(data);
-                                            const fileName =
-                                                data.videoDetails.title +
-                                                " " +
-                                                data.formats.filter(format => format.itag === 22)[0].qualityLabel +
-                                                ".mp4";
-                    
-                                            const downloadDir = path.join(process.cwd(), path.join("downloads"));
-                                            const playlistDir = path.join(process.cwd(), path.join("downloads", search.title));
-                                            if (!fs.existsSync(downloadDir)) {
-                                                fs.mkdirSync(downloadDir);
-                                            }
-                                            if (!fs.existsSync(playlistDir)) {
-                                                fs.mkdirSync(playlistDir);
-                                            }
-                                            const video = ytdl(search.items[key].shortUrl, {
-                                                filter: function (format) {
-                                                    return format.itag === 22;
-                                                },
-                                            });
-                    
-                                            let starttime;
-                                            video.pipe(
-                                                fs.createWriteStream(
-                                                    path.join(process.cwd(), path.join("downloads", search.title, fileName))
-                                                )
-                                            );
-                    
-                                            video.once("response", () => {
-                                                starttime = Date.now();
-                                            });
-                                            video.on("progress", (chunkLength, downloaded, total) => {
-                                                const percent = downloaded / total;
-                                                const downloadedMinutes = (Date.now() - starttime) / 1000;
-                                                const estimatedDownloadTime =
-                                                    downloadedMinutes / percent - downloadedMinutes;
-                                                progressLabel.innerText = percent.toFixed(2) * 100 + "%";
-                                            });
-                                            video.on("end", () => {
-                                                ipcRenderer.invoke("show-notification", fileName);
-                                            });
-                    
-                                        });*/
+                    await downloadPlayListVideo(search.items[key].shortUrl, search.title, counter, progressLabel);
+
+                    /*await ytdl.getInfo(search.items[key].shortUrl).then((data) => {
+                        //console.log(data);
+
+                        let fileName =
+                            data.videoDetails.title +
+                            " " +
+                            data.formats.filter(format => format.itag === 22)[0].qualityLabel +
+                            ".mp4";
+                        if (playlistNumbersCheckBox.checked) {
+                            fileName = counter + ". " + fileName;
+                        }
+                        const downloadDir = path.join(process.cwd(), path.join("downloads"));
+                        const playlistDir = path.join(process.cwd(), path.join("downloads", search.title));
+                        if (!fs.existsSync(downloadDir)) {
+                            fs.mkdirSync(downloadDir);
+                        }
+                        if (!fs.existsSync(playlistDir)) {
+                            fs.mkdirSync(playlistDir);
+                        }
+                        const video = ytdl(search.items[key].shortUrl, {
+                            filter: function (format) {
+                                return format.itag === 22;
+                            },
+                        });
+
+                        let starttime;
+                        video.pipe(
+                            fs.createWriteStream(
+                                path.join(process.cwd(), path.join("downloads", search.title, fileName))
+                            )
+                        );
+
+                        video.once("response", () => {
+                            starttime = Date.now();
+                        });
+                        video.on("progress", (chunkLength, downloaded, total) => {
+                            const percent = downloaded / total;
+                            const downloadedMinutes = (Date.now() - starttime) / 1000;
+                            const estimatedDownloadTime =
+                                downloadedMinutes / percent - downloadedMinutes;
+                            progressLabel.innerText = percent.toFixed(2) * 100 + "%";
+                        });
+                        video.on("end", () => {
+                            ipcRenderer.invoke("show-notification", fileName);
+                        });
+
+                    });*/
                 });
 
             } catch (error) {
