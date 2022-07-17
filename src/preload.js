@@ -21,15 +21,25 @@ window.addEventListener("DOMContentLoaded", () => {
     const progressBarContainer = document.querySelector("#progressBarContainer");
     const playlistCheckBox = document.querySelector("#playlistCheckBox");
     const playlistNumbersCheckBox = document.querySelector("#playlistNumbersCheckBox");
+    const playlistNumbersCheckBoxContainer = document.querySelector("#playlistNumbersCheckBoxContainer");
+
     const seperatorLine = document.querySelector("#seperatorLine");
     const progressBarWrapper = document.querySelector("#progressBarWrapper");
 
+    const qualitySwitch = document.querySelector("#qualitySwitch");
+    const qualitySwitchContainer = document.querySelector("#qualitySwitchContainer");
+    const qualitySwitchLabel = document.querySelector("#qualitySwitchLabel");
     const ytpl = require("ytpl");
 
     playlistCheckBox.addEventListener("click", (event) => {
-        playlistNumbersCheckBox.toggleAttribute("disabled");
+        //playlistNumbersCheckBox.toggleAttribute("disabled");
+        qualitySwitchContainer.classList.toggle("d-none");
+        playlistNumbersCheckBoxContainer.classList.toggle("d-none");
     });
 
+    qualitySwitch.addEventListener("click", () => {
+        qualitySwitch.checked ? qualitySwitchLabel.innerText = "720p" : qualitySwitchLabel.innerText = "360p";
+    })
     const downloadVideo = async (videoLink) => {
         await ytdl.getInfo(videoLink).then((data) => {
             btnSearchText.classList.toggle("d-none");
@@ -94,12 +104,14 @@ window.addEventListener("DOMContentLoaded", () => {
                         });
                         video.on("progress", (chunkLength, downloaded, total) => {
                             const percent = downloaded / total;
-                            const downloadedMinutes = (Date.now() - starttime) / 1000;
-                            const estimatedDownloadTime =
-                                downloadedMinutes / percent - downloadedMinutes;
-                            progressBarContainer.classList.remove("d-none");
-                            progressBar.style.width = percent.toFixed(2) * 100 + "%";
-                            progressBar.innerText = percent.toFixed(2) * 100 + "%";
+                            const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
+                            const estimatedDownloadTime = (downloadedMinutes / percent) - downloadedMinutes;
+                            progressBar.style.width = (percent * 100).toFixed(2) + "%";
+                            progressBar.innerText = (percent * 100).toFixed(2) + "%";
+                            console.log(estimatedDownloadTime);
+                            console.log(`(${(downloaded / 1024 / 1024).toFixed(2)}MB of ${(total / 1024 / 1024).toFixed(2)}MB)\n`);
+                            console.log(`Running for: ${downloadedMinutes.toFixed(2)}minutes`);
+                            console.log(`Estimated time left: ${estimatedDownloadTime.toFixed(2)}minutes `);
                         });
                         video.on("end", () => {
                             progressBar.classList.add("bg-success");
@@ -113,20 +125,26 @@ window.addEventListener("DOMContentLoaded", () => {
             });
         });
     };
-
     const downloadPlayListVideo = async (videoLink, playlistTitle, counter, progressLabel) => {
         await ytdl.getInfo(videoLink).then((data) => {
-            console.log(data);
+            let format = data.formats.filter(format => format.itag === 18)[0];
+            if (qualitySwitch.checked) {
+                format = data.formats.filter(format => format.itag === 22)[0];
+                if (format === undefined) format = data.formats.filter(format => format.itag === 18)[0];
+            }
+            console.log(counter, format);
+
             let fileName =
-                data.videoDetails.title +
+                data.videoDetails.title.replace(/[<>:"\/\\|?*]+/g, "") +
                 " " +
-                data.formats.filter(format => format.itag === 22)[0].qualityLabel +
+                format.qualityLabel +
                 ".mp4";
             if (playlistNumbersCheckBox.checked) {
                 fileName = counter + ". " + fileName;
             }
             const downloadDir = path.join(process.cwd(), path.join("downloads"));
             const playlistDir = path.join(process.cwd(), path.join("downloads", playlistTitle));
+            console.log("File: " + fileName);
             if (!fs.existsSync(downloadDir)) {
                 fs.mkdirSync(downloadDir);
             }
@@ -135,7 +153,7 @@ window.addEventListener("DOMContentLoaded", () => {
             }
             const video = ytdl(videoLink, {
                 filter: function (format) {
-                    return format.itag === 22;
+                    return format.itag === format.itag;
                 },
             });
 
@@ -151,15 +169,17 @@ window.addEventListener("DOMContentLoaded", () => {
             });
             video.on("progress", (chunkLength, downloaded, total) => {
                 const percent = downloaded / total;
-                const downloadedMinutes = (Date.now() - starttime) / 1000;
-                const estimatedDownloadTime =
-                    downloadedMinutes / percent - downloadedMinutes;
-                progressLabel.innerText = percent.toFixed(2) * 100 + "%";
+                const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
+                const estimatedDownloadTime = (downloadedMinutes / percent) - downloadedMinutes;
+                progressLabel.innerText = (percent * 100).toFixed(2) + "%";
+                console.log(estimatedDownloadTime);
+                console.log(`(${(downloaded / 1024 / 1024).toFixed(2)}MB of ${(total / 1024 / 1024).toFixed(2)}MB)\n`);
+                console.log(`Running for: ${downloadedMinutes.toFixed(2)}minutes`);
+                console.log(`Estimated time left: ${estimatedDownloadTime.toFixed(2)}minutes `);
             });
             video.on("end", () => {
                 ipcRenderer.invoke("show-notification", fileName);
             });
-
         });
     }
     btnSearch.addEventListener("click", async (event) => {
@@ -192,11 +212,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
                     const progressLabel = tr.insertCell();
                     progressLabel.innerText = "0%";
-                    await downloadPlayListVideo(search.items[key].shortUrl, search.title, counter, progressLabel);
+                    await downloadPlayListVideo(search.items[key].shortUrl, search.title.replace(/[<>:"\/\\|?*]+/g, ""), counter, progressLabel);
 
                     /*await ytdl.getInfo(search.items[key].shortUrl).then((data) => {
                         //console.log(data);
-
+    
                         let fileName =
                             data.videoDetails.title +
                             " " +
@@ -218,14 +238,14 @@ window.addEventListener("DOMContentLoaded", () => {
                                 return format.itag === 22;
                             },
                         });
-
+    
                         let starttime;
                         video.pipe(
                             fs.createWriteStream(
                                 path.join(process.cwd(), path.join("downloads", search.title, fileName))
                             )
                         );
-
+    
                         video.once("response", () => {
                             starttime = Date.now();
                         });
@@ -239,7 +259,7 @@ window.addEventListener("DOMContentLoaded", () => {
                         video.on("end", () => {
                             ipcRenderer.invoke("show-notification", fileName);
                         });
-
+    
                     });*/
                 });
 
