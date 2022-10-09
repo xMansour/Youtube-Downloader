@@ -1,5 +1,5 @@
 {
-  "name": "youtube-downloader---youtube-dl",
+  "name": "YTDownloader",
   "version": "1.0.0",
   "description": "Youtube video and playlist downloader based on youtube-dl and build with electronjs",
   "main": "./src/main.js",
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/xMansour/Youtube-Downloader#readme",
   "devDependencies": {
     "electron": "^20.0.3",
+    "electron-packager": "^16.0.0",
     "prettier": "^2.7.1"
   },
   "dependencies": {

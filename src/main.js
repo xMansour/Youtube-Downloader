@@ -26,14 +26,38 @@ app.whenReady().then(() => {
   });
 });
 
+if (process.platform === 'win32') {
+  app.setAppUserModelId(app.name);
+}
+
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-ipcMain.handle("show-notification", (event, ...args) => {
+ipcMain.handle("videoDownloaded", (event, ...args) => {
   const notification = {
     title: "Video Downloaded",
     body: `${args[0]}`,
+    icon: path.join(__dirname, "icons", "launcher_icon.jpg"),
+  };
+
+  new Notification(notification).show();
+});
+
+ipcMain.handle("notAPlayList", (event, ...args) => {
+  const notification = {
+    title: "Wrong Link",
+    body: "Unable to find a playlist with that link.",
+    icon: path.join(__dirname, "icons", "launcher_icon.jpg"),
+  };
+
+  new Notification(notification).show();
+});
+
+ipcMain.handle("notAVideo", (event, ...args) => {
+  const notification = {
+    title: "Wrong Link",
+    body: "Unable to find a video with that link.",
     icon: path.join(__dirname, "icons", "launcher_icon.jpg"),
   };
 
