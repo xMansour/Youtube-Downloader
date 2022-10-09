@@ -30,7 +30,8 @@ Youtube video and playlist downloader built with electron.js and based on youtub
 
 
 ## How To Use<a id='howToUse'></a>
-After entering a video's URL and pressing the search button, you may download it. It'll look for available qualities and display them in a table.
+After entering a video's URL and pressing the search button, you may download it. It'll look for available qualities and display them in a table.  
+
 <img src="/docs/screenshots/videosDownload.png"  hspace="10" vspace="10">
 
 ### Downloading Multiple Qualities<a id='downloadingMultipleQulitiesVideos'></a>
@@ -49,15 +50,15 @@ Downloading playlists is similar to downloading videos. Select the Playlist chec
 
 <img src="/docs/screenshots/PlaylistDownloads.png"  hspace="10" vspace="10">
 
-When you search for a playlist link, it will be instantly downloaded.
+When you search for a playlist link, it will be instantly downloaded.  
 
 <img src="/docs/screenshots/downloadingPlaylists.gif"  hspace="10" vspace="10">  
 
-If you go to the downloads folder again, you should find a folder with the name of the playlist you downloaded.
+If you go to the downloads folder again, you should find a folder with the name of the playlist you downloaded.  
 
 <img src="/docs/screenshots/downloadedVideos.png"  hspace="10" vspace="10">  
 
-If you opened the "Small Clips" folder, you should find your downloaded playlist videos as below. Notice how the videos are prefixed with numbers since we checked the "Add prefix order number" checkbox.
+If you opened the "Small Clips" folder, you should find your downloaded playlist videos as below. Notice how the videos are prefixed with numbers since we checked the "Add prefix order number" checkbox.  
 
 <img src="/docs/screenshots/downloadedPlaylists.png"  hspace="10" vspace="10">  
 
