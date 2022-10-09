@@ -1,4 +1,5 @@
-# Welcome to Maktab!
+# Welcome to YTDownloader!
+A free and open source youtube video and playlist downloader built with electron.js.  
 
 ## Table of Contents
 1. [About The Project](#ahowToUsebout)
